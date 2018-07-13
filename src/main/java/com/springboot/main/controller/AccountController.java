@@ -34,7 +34,7 @@ public class AccountController {
     
     @RequestMapping(value = "/delete/{id}", method=RequestMethod.DELETE)
 	public String delete(@PathVariable long id) {
-	    logger.trace("/delete called");
+	   // logger.trace("/delete called");
     	String st = accountService.delete(id);
 		
 		return st;

@@ -1,11 +1,6 @@
-### A SpringBoot Application with Web socket
+### A SpringBoot Application with BoneCP
 
-Spring boot 2 - Hibernate 5 - Spring MVC - Spring bean validations - Spring Rest Controllers
+Demonstrates how to set up a connection pool with BoneCP in a SpringBoot application. 
 
-
-### Screens
-
-Login - Registration - Web chating page
-
-
-
+### To run the application
+`mvn clean package && java -jar target/springbootbonecpds.jar`

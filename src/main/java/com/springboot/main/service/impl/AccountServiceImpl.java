@@ -14,8 +14,8 @@ import com.springboot.main.util.StringUtilities;
 import java.util.logging.FileHandler;
 import java.util.logging.SimpleFormatter;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -24,7 +24,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class AccountServiceImpl implements AccountService {
     
-    static final Logger logger = LogManager.getLogger(AccountServiceImpl.class);
+    static final Logger logger = LoggerFactory.getLogger(AccountServiceImpl.class);
    
     
     
@@ -69,28 +69,30 @@ public class AccountServiceImpl implements AccountService {
 		
 	@Override
 	public String create(AccountDTO acDTO) {
-		logger.info("AccountServiceImpl.java : create() called");
+		logger.info("AccountServiceImpl.java : create() called: info");
+		logger.trace("AccountServiceImpl.java : create() called: trace");
+		
 		AccountDTO accountDTO;
 		
-		logger.info("AccountServiceImpl.java : checking for username existance");
+		//logger.info("AccountServiceImpl.java : checking for username existance");
 		accountDTO=accountController.getByUsername(acDTO.getUsername());
 		
 		if(!StringUtilities.isEmpty(accountDTO.getFullname())) {
-			logger.info("AccountServiceImpl.java : throwing username already exists");
+			//logger.info("AccountServiceImpl.java : throwing username already exists");
 			throw new ApplicationException(ResponseStatusCode.USERNAME_ALREADY_EXIST);
 		}
 		
-		logger.info("AccountServiceImpl.java : checking for cell# existance");
+		//logger.info("AccountServiceImpl.java : checking for cell# existance");
 		accountDTO=accountController.getByMobile(acDTO.getMobile());
 		if(!StringUtilities.isEmpty(accountDTO.getFullname())){
-			logger.info("AccountServiceImpl.java : throwing cell# already exists");
+		//	logger.info("AccountServiceImpl.java : throwing cell# already exists");
 			throw new ApplicationException(ResponseStatusCode.CELL_ALREADY_EXIST);
 		}
 		
-		logger.info("AccountServiceImpl.java : checking for email existance");
+		//logger.info("AccountServiceImpl.java : checking for email existance");
 		accountDTO=accountController.getByEmail(acDTO.getEmail());
 		if(!StringUtilities.isEmpty(accountDTO.getFullname())){
-			logger.info("AccountServiceImpl.java : throwing email already exists");
+		//	logger.info("AccountServiceImpl.java : throwing email already exists");
 			throw new ApplicationException(ResponseStatusCode.EMAIL_ALREADY_EXIST);
 		}
 		
@@ -98,7 +100,7 @@ public class AccountServiceImpl implements AccountService {
 		Account ac = EntityDTOConverter.dtoToEntity(acDTO);
 		accountRepository.saveAndFlush(ac);
 		
-		logger.info("AccountServiceImpl.java : create(): user created successfully");
+		//logger.info("AccountServiceImpl.java : create(): user created successfully");
 		return "user created successfully!";
 	}
 		
@@ -122,13 +124,13 @@ public class AccountServiceImpl implements AccountService {
 	@Override
 	public Account getUser(String username, String password) {
 		
-		logger.info("AccountServiceImpl.java : getUser() is executing ");
+		//logger.info("AccountServiceImpl.java : getUser() is executing ");
 		
 		Account account = accountRepository.findByUsername(username);
 		if(account!=null) {
 			if(BCryptConverter.compare(password, account.getPassword()))
 			{
-				logger.info("AccountServiceImpl.java : user login success");
+				//logger.info("AccountServiceImpl.java : user login success");
 				return account;
 			}
 			else
